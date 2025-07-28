@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrustFund.Domain", "TrustFund.Domain\TrustFund.Domain.csproj", "{02158204-9D1D-4D62-8E82-EBADD1512C3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrustFund.Infrastructure", "TrustFund.Infrastructure\TrustFund.Infrastructure.csproj", "{BE707DCC-223A-4469-88BB-024D27FF5D97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02158204-9D1D-4D62-8E82-EBADD1512C3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02158204-9D1D-4D62-8E82-EBADD1512C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02158204-9D1D-4D62-8E82-EBADD1512C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02158204-9D1D-4D62-8E82-EBADD1512C3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2B2236F-2BE9-4D79-97F8-47FF0CAA7B58}
+	EndGlobalSection
+EndGlobal
