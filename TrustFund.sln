@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrustFund.Domain", "TrustFu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrustFund.Infrastructure", "TrustFund.Infrastructure\TrustFund.Infrastructure.csproj", "{BE707DCC-223A-4469-88BB-024D27FF5D97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrustFund.Services", "TrustFund.Services\TrustFund.Services.csproj", "{316C2595-7583-4BCC-967A-760CE892D47B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE707DCC-223A-4469-88BB-024D27FF5D97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{316C2595-7583-4BCC-967A-760CE892D47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{316C2595-7583-4BCC-967A-760CE892D47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{316C2595-7583-4BCC-967A-760CE892D47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{316C2595-7583-4BCC-967A-760CE892D47B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
