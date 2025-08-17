@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustFund Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+        .header p {
+            color: #7f8c8d;
+            margin: 5px 0 0;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .alert.loading {
+            background-color: #eaf6ff;
+            color: #3498db;
+            border: 1px solid #cceeff;
+        }
+        .alert.success {
+            background-color: #e8f9ed;
+            color: #27ae60;
+            border: 1px solid #d4edda;
+        }
+        .alert.error {
+            background-color: #fdeded;
+            color: #c0392b;
+            border: 1px solid #f5c6cb;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #3498db;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        .tab-btn:hover {
+            background-color: #bdc3c7;
+            color: #2c3e50;
+        }
+        .tab-btn.active:hover {
+            background-color: #2980b9;
+        }
+        .content-section {
+            padding: 20px;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+        }
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content-header h2 {
+            font-weight: 600;
+            color: #34495e;
+            margin: 0;
+        }
+        .create-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #2ecc71;
+            transition: background-color 0.3s;
+        }
+        .create-btn:hover {
+            background-color: #27ae60;
+        }
+        .table-container, .form-container {
+            display: none;
+        }
+        .table-container.visible, .form-container.visible {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #34495e;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        td {
+            font-size: 14px;
+            color: #555;
+        }
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #fff;
+            background-color: #e74c3c;
+            transition: background-color 0.3s;
+        }
+        .action-btn:hover {
+            background-color: #c0392b;
+        }
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .form-submit-btn, .form-cancel-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .form-submit-btn {
+            background-color: #2ecc71;
+            color: #ffffff;
+        }
+        .form-submit-btn:hover {
+            background-color: #27ae60;
+        }
+        .form-cancel-btn {
+            background-color: #bdc3c7;
+            color: #2c3e50;
+        }
+        .form-cancel-btn:hover {
+            background-color: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>TrustFund Dashboard</h1>
+        <p>Gestión de usuarios, préstamos y pagos.</p>
+    </div>
+
+    <!-- Mensajes de estado -->
+    <div id="status-message" class="alert loading" style="display: none;">Cargando datos...</div>
+
+    <!-- Botones de navegación -->
+    <div class="tabs">
+        <button id="show-users" class="tab-btn active">Usuarios</button>
+        <button id="show-loans" class="tab-btn">Préstamos</button>
+        <button id="show-payments" class="tab-btn">Pagos</button>
+    </div>
+
+    <!-- Sección de Usuarios -->
+    <div id="users-section" class="content-section visible">
+        <div class="content-header">
+            <h2>Usuarios</h2>
+            <button id="create-user-btn" class="create-btn">Crear Nuevo</button>
+        </div>
+        <div id="users-table" class="table-container visible">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="users-body"></tbody>
+            </table>
+        </div>
+        <div id="user-form" class="form-container">
+            <form>
+                <div class="form-group">
+                    <label for="userName">Nombre</label>
+                    <input type="text" id="userName" name="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" name="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">Teléfono</label>
+                    <input type="tel" id="userPhone" name="userPhone">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="form-submit-btn">Guardar</button>
+                    <button type="button" class="form-cancel-btn" onclick="showTable('users-table')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sección de Préstamos -->
+    <div id="loans-section" class="content-section" style="display: none;">
+        <div class="content-header">
+            <h2>Préstamos</h2>
+            <button id="create-loan-btn" class="create-btn">Crear Nuevo</button>
+        </div>
+        <div id="loans-table" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Monto</th>
+                        <th>Pagado</th>
+                        <th>Interés</th>
+                        <th>Estado</th>
+                        <th>Prestamista ID</th>
+                        <th>Prestatario ID</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="loans-body"></tbody>
+            </table>
+        </div>
+        <div id="loan-form" class="form-container">
+            <form>
+                <div class="form-group">
+                    <label for="loanLenderId">Prestamista (ID)</label>
+                    <input type="text" id="loanLenderId" name="loanLenderId" required>
+                </div>
+                <div class="form-group">
+                    <label for="loanBorrowerId">Prestatario (ID)</label>
+                    <input type="text" id="loanBorrowerId" name="loanBorrowerId" required>
+                </div>
+                <div class="form-group">
+                    <label for="loanAmount">Monto</label>
+                    <input type="number" step="0.01" id="loanAmount" name="loanAmount" required>
+                </div>
+                <div class="form-group">
+                    <label for="loanInterestRate">Tasa de Interés (%)</label>
+                    <input type="number" step="0.01" id="loanInterestRate" name="loanInterestRate" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="form-submit-btn">Guardar</button>
+                    <button type="button" class="form-cancel-btn" onclick="showTable('loans-table')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sección de Pagos -->
+    <div id="payments-section" class="content-section" style="display: none;">
+        <div class="content-header">
+            <h2>Pagos</h2>
+            <button id="create-payment-btn" class="create-btn">Crear Nuevo</button>
+        </div>
+        <div id="payments-table" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Monto Pagado</th>
+                        <th>Fecha de Pago</th>
+                        <th>Préstamo ID</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="payments-body"></tbody>
+            </table>
+        </div>
+        <div id="payment-form" class="form-container">
+            <form>
+                <div class="form-group">
+                    <label for="paymentLoanId">Préstamo (ID)</label>
+                    <input type="text" id="paymentLoanId" name="paymentLoanId" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentAmount">Monto a Pagar</label>
+                    <input type="number" step="0.01" id="paymentAmount" name="paymentAmount" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="form-submit-btn">Guardar</button>
+                    <button type="button" class="form-cancel-btn" onclick="showTable('payments-table')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Constantes y variables globales
+    const API_BASE_URL = 'https://localhost:7222/api';
+    const statusMessage = document.getElementById('status-message');
+    const tableSections = {
+        'users-table': document.getElementById('users-section'),
+        'loans-table': document.getElementById('loans-section'),
+        'payments-table': document.getElementById('payments-section')
+    };
+    const formSections = {
+        'user-form': document.getElementById('users-section'),
+        'loan-form': document.getElementById('loans-section'),
+        'payment-form': document.getElementById('payments-section')
+    };
+
+    let allLoans = [];
+    let allPayments = [];
+
+    // Eventos y carga inicial
+    document.addEventListener('DOMContentLoaded', () => {
+        // Escucha los clics en los botones de navegación (tabs)
+        document.getElementById('show-users').addEventListener('click', () => showContent('users-table'));
+        document.getElementById('show-loans').addEventListener('click', () => showContent('loans-table'));
+        document.getElementById('show-payments').addEventListener('click', () => showContent('payments-table'));
+
+        // Escucha los clics en los botones para mostrar formularios
+        document.getElementById('create-user-btn').addEventListener('click', () => showContent('user-form'));
+        document.getElementById('create-loan-btn').addEventListener('click', () => showContent('loan-form'));
+        document.getElementById('create-payment-btn').addEventListener('click', () => showContent('payment-form'));
+
+        // Escucha el evento de envío de los formularios
+        document.getElementById('user-form').addEventListener('submit', handleUserSubmit);
+        document.getElementById('loan-form').addEventListener('submit', handleLoanSubmit);
+        document.getElementById('payment-form').addEventListener('submit', handlePaymentSubmit);
+
+        // Carga los datos iniciales al abrir la página
+        loadAllData();
+        showContent('users-table');
+    });
+
+    async function loadAllData() {
+        showStatus('Cargando todos los datos...', 'loading');
+        try {
+            await Promise.all([loadUsers(), loadLoans(), loadPayments()]);
+            hideStatus();
+        } catch (error) {
+            showStatus('Error al cargar todos los datos. Verifique que la API esté en ejecución.', 'error');
+            console.error('Error al cargar datos:', error);
+            throw error;
+        }
+    }
+
+    function showStatus(message, type) {
+        statusMessage.textContent = message;
+        statusMessage.className = `alert ${type}`;
+        statusMessage.style.display = 'block';
+    }
+
+    function hideStatus() {
+        statusMessage.style.display = 'none';
+    }
+
+    // Nueva función para ocultar el mensaje de estado después de un retraso
+    function hideStatusAfterDelay(delay = 3000) {
+        setTimeout(() => {
+            hideStatus();
+        }, delay);
+    }
+
+    function showContent(id) {
+        // Ocultar todas las secciones de contenido
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Ocultar todos los contenedores de tabla y formulario
+        document.querySelectorAll('.table-container, .form-container').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Desactivar todos los botones de navegación
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Mostrar la sección de contenido correcta
+        let sectionToShow;
+        if (id in tableSections) {
+            sectionToShow = tableSections[id];
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(`show-${id.split('-')[0]}`).classList.add('active');
+        } else if (id in formSections) {
+            sectionToShow = formSections[id];
+            document.getElementById(id).style.display = 'block';
+        }
+        
+        if (sectionToShow) {
+            sectionToShow.style.display = 'block';
+        }
+    }
+    
+    // --- Funciones para manejar la lógica de la API ---
+
+    // Lógica de Usuarios
+    async function loadUsers() {
+        showStatus('Cargando usuarios...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/users`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const users = await response.json();
+            const tbody = document.getElementById('users-body');
+            tbody.innerHTML = '';
+            if (users.length > 0) {
+                users.forEach(user => {
+                    const row = `<tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phoneNumber}</td>
+                        <td>
+                            <button class="action-btn delete-btn" onclick="handleUserDelete('${user.id}')">Eliminar</button>
+                        </td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5">No hay usuarios para mostrar.</td></tr>';
+            }
+        } catch (error) {
+            showStatus('Error al cargar usuarios. Verifique que la API esté en ejecución.', 'error');
+            console.error('Error al cargar usuarios:', error);
+            throw error;
+        }
+    }
+
+    async function handleUserSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const user = {
+            name: form.userName.value,
+            email: form.userEmail.value,
+            phoneNumber: form.userPhone.value
+        };
+        showStatus('Creando usuario...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/users`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData && errorData.errors ? JSON.stringify(errorData.errors) : response.statusText || 'Error desconocido');
+            }
+            form.reset();
+            showContent('users-table');
+            await loadUsers();
+            showStatus('Usuario creado exitosamente!', 'success');
+            hideStatusAfterDelay();
+        } catch (error) {
+            showStatus('Error al crear usuario: ' + error.message, 'error');
+            console.error('Error:', error);
+        }
+    }
+    
+    async function handleUserDelete(userId) {
+        if (!confirm('¿Estás seguro de que quieres eliminar a este usuario?')) {
+            return;
+        }
+        showStatus('Eliminando usuario...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('No se pudo eliminar el usuario.');
+            }
+            await loadUsers();
+            showStatus('Usuario eliminado exitosamente!', 'success');
+            hideStatusAfterDelay();
+        } catch (error) {
+            showStatus('Error al eliminar el usuario: ' + error.message, 'error');
+            console.error('Error:', error);
+        }
+    }
+
+    // Lógica de Préstamos
+    async function loadLoans() {
+        showStatus('Cargando préstamos...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/loans`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            allLoans = await response.json();
+            renderLoans();
+        } catch (error) {
+            showStatus('Error al cargar préstamos. Verifique que la API esté en ejecución.', 'error');
+            console.error('Error al cargar préstamos:', error);
+            throw error;
+        }
+    }
+
+    function renderLoans() {
+        const tbody = document.getElementById('loans-body');
+        tbody.innerHTML = '';
+        if (allLoans.length > 0) {
+            allLoans.forEach(loan => {
+                const totalPaid = allPayments
+                    .filter(p => p.loanId === loan.id)
+                    .reduce((sum, p) => sum + p.amountPaid, 0);
+
+                const row = `<tr>
+                    <td>${loan.id}</td>
+                    <td>$${loan.amount.toFixed(2)}</td>
+                    <td>$${totalPaid.toFixed(2)}</td>
+                    <td>${(loan.interestRate * 100).toFixed(2)}%</td>
+                    <td>${loan.status}</td>
+                    <td>${loan.lenderId}</td>
+                    <td>${loan.borrowerId}</td>
+                    <td>
+                        <button class="action-btn delete-btn" onclick="handleLoanDelete('${loan.id}')">Eliminar</button>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="8">No hay préstamos para mostrar.</td></tr>';
+        }
+    }
+
+
+    async function handleLoanSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const loan = {
+            lenderId: form.loanLenderId.value,
+            borrowerId: form.loanBorrowerId.value,
+            amount: parseFloat(form.loanAmount.value),
+            interestRate: parseFloat(form.loanInterestRate.value) / 100,
+            dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString()
+        };
+        showStatus('Creando préstamo...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/loans`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(loan)
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData && errorData.errors ? JSON.stringify(errorData.errors) : response.statusText || 'Error desconocido');
+            }
+            form.reset();
+            showContent('loans-table');
+            await loadAllData();
+            showStatus('Préstamo creado exitosamente!', 'success');
+            hideStatusAfterDelay();
+        } catch (error) {
+            showStatus('Error al crear préstamo: ' + error.message, 'error');
+            console.error('Error:', error);
+        }
+    }
+
+    async function handleLoanDelete(loanId) {
+        if (!confirm('¿Estás seguro de que quieres eliminar este préstamo?')) {
+            return;
+        }
+        showStatus('Eliminando préstamo...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/loans/${loanId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('No se pudo eliminar el préstamo.');
+            }
+            await loadAllData();
+            showStatus('Préstamo eliminado exitosamente!', 'success');
+            hideStatusAfterDelay();
+        } catch (error) {
+            showStatus('Error al eliminar el préstamo: ' + error.message, 'error');
+            console.error('Error:', error);
+        }
+    }
+
+
+    // Lógica de Pagos
+    async function loadPayments() {
+        showStatus('Cargando pagos...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/payments`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            allPayments = await response.json();
+            renderPayments();
+        } catch (error) {
+            showStatus('Error al cargar pagos. Verifique que la API esté en ejecución.', 'error');
+            console.error('Error al cargar pagos:', error);
+            throw error;
+        }
+    }
+
+    function renderPayments() {
+        const tbody = document.getElementById('payments-body');
+        tbody.innerHTML = '';
+        if (allPayments.length > 0) {
+            allPayments.forEach(payment => {
+                const row = `<tr data-id="${payment.id}">
+                    <td>${payment.id}</td>
+                    <td>$${payment.amountPaid.toFixed(2)}</td>
+                    <td>${new Date(payment.paymentDate).toLocaleDateString()}</td>
+                    <td>${payment.loanId}</td>
+                    <td>
+                        <button class="action-btn delete-btn" onclick="handlePaymentDelete('${payment.id}')">Eliminar</button>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="5">No hay pagos para mostrar.</td></tr>';
+        }
+    }
+
+    async function handlePaymentSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const payment = {
+            loanId: form.paymentLoanId.value,
+            amountPaid: parseFloat(form.paymentAmount.value)
+        };
+        showStatus('Creando pago...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/payments`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payment)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData && errorData.errors ? JSON.stringify(errorData.errors) : response.statusText || 'Error desconocido');
+            }
+
+            form.reset();
+            showContent('payments-table');
+            await loadAllData();
+            showStatus('Pago creado exitosamente!', 'success');
+            hideStatusAfterDelay();
+        } catch (error) {
+            showStatus('Error al crear pago: ' + error.message, 'error');
+            console.error('Error:', error);
+        }
+    }
+
+    async function handlePaymentDelete(paymentId) {
+        if (!confirm('¿Estás seguro de que quieres eliminar este pago?')) {
+            return;
+        }
+        showStatus('Eliminando pago...', 'loading');
+        try {
+            const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('No se pudo eliminar el pago.');
+            }
+            await loadAllData();
+            showStatus('Pago eliminado exitosamente!', 'success');
+            hideStatusAfterDelay();
+        } catch (error) {
+            showStatus('Error al eliminar el pago: ' + error.message, 'error');
+            console.error('Error:', error);
+        }
+    }
+</script>
+
+</body>
+</html>
